@@ -58,7 +58,7 @@ export default function Home() {
       </header>
 
       <div className="calendar">
-        {['Do','Lu','Ma','Mi','Ju','Vi','Sa'].map(d => (
+        {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => (
           <div key={d} className="cal-label">{d}</div>
         ))}
         {Array.from({ length: startPad }).map((_, i) => <div key={'p'+i} />)}
