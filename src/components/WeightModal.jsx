@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import './WeightModal.css'
 
-export default function WeightModal({ dateStr, onSave, onClose }) {
+export default function WeightModal({ dateStr, existingWeight, onSave, onClose }) {
   const [lbs, setLbs] = useState('')
+
+useEffect(() => {
+  setLbs(existingWeight ? String(existingWeight) : '')
+}, [existingWeight, dateStr])
   const date = parseISO(dateStr)
   const label = format(date, "d 'de' MMMM", { locale: es })
 

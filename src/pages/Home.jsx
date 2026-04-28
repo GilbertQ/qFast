@@ -31,9 +31,11 @@ export default function Home() {
     const d1 = parseISO(first)
     const d2 = parseISO(dateStr)
     const diff = Math.floor((d2 - d1) / (1000 * 60 * 60 * 24))
-    return diff > 0 && diff % 15 === 0 && !log.weights.find(w => w.date === dateStr)
+    return diff > 0 && diff % 15 === 0 // && !log.weights.find(w => w.date === dateStr)
+    
   }
 
+/*
   function handleDayClick(date) {
     const dateStr = format(date, 'yyyy-MM-dd')
     if (needsWeight(dateStr)) {
@@ -42,6 +44,23 @@ export default function Home() {
       setSelected(dateStr)
     }
   }
+  */
+  function handleDayClick(date) {
+  const dateStr = format(date, 'yyyy-MM-dd')
+
+  const isWeightCheckDay = (() => {
+    const first = getFirstDate()
+    if (!first) return false
+    const diff = Math.floor((parseISO(dateStr) - parseISO(first)) / (1000*60*60*24))
+    return diff > 0 && diff % 15 === 0
+  })()
+
+  if (isWeightCheckDay) {
+    setWeightDate(dateStr)
+  } else {
+    setSelected(dateStr)
+  }
+}
 
   function prevMonth() { setCursor(d => new Date(d.getFullYear(), d.getMonth() - 1, 1)) }
   function nextMonth() { setCursor(d => new Date(d.getFullYear(), d.getMonth() + 1, 1)) }
@@ -49,7 +68,7 @@ export default function Home() {
   return (
     <div className="home">
       <header className="home-header">
-        <h1 className="brand">QFast</h1>
+        <h1 className="brand">qFast</h1>
         <div className="month-nav">
           <button onClick={prevMonth}>‹</button>
           <span>{format(cursor, 'MMMM yyyy', { locale: es })}</span>
@@ -91,11 +110,19 @@ export default function Home() {
       )}
 
       {weightDate && (
-        <WeightModal
-          dateStr={weightDate}
-          onSave={(lbs) => { addWeight(weightDate, lbs); setWeightDate(null); setSelected(weightDate) }}
-          onClose={() => { setWeightDate(null); setSelected(weightDate) }}
-        />
+<WeightModal
+  dateStr={weightDate}
+  existingWeight={log.weights.find(w => w.date === weightDate)?.lbs}
+  onSave={(lbs) => {
+    addWeight(weightDate, lbs)
+    setWeightDate(null)
+    setSelected(weightDate)
+  }}
+  onClose={() => {
+    setWeightDate(null)
+    setSelected(weightDate)
+  }}
+/>
       )}
     </div>
   )

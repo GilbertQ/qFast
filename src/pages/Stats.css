@@ -29,3 +29,21 @@
   text-align: center;
   padding: 24px 0;
 }
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.stats-header .stats-title { margin-bottom: 0; }
+
+.btn-export {
+  background: var(--surface2);
+  color: var(--accent2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
